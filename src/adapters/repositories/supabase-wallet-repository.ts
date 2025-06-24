@@ -1,6 +1,6 @@
-import type { SupabaseClient } from '@/infrastructure/database/supabase'
+import type { CreateWalletDTO, UpdateWalletDTO, Wallet } from '@/domains/wallets/entities/wallet'
 import type { WalletRepository } from '@/domains/wallets/repositories/wallet-repository'
-import type { Wallet, CreateWalletDTO, UpdateWalletDTO } from '@/domains/wallets/entities/wallet'
+import type { SupabaseClient } from '@/infrastructure/database/supabase'
 
 export class SupabaseWalletRepository implements WalletRepository {
   constructor(private readonly supabase: SupabaseClient) {}
@@ -24,7 +24,7 @@ export class SupabaseWalletRepository implements WalletRepository {
     const updateData: any = {
       updated_at: new Date().toISOString(),
     }
-    
+
     if (data.name !== undefined) updateData.name = data.name
     if (data.currency !== undefined) updateData.currency = data.currency
 
@@ -40,10 +40,7 @@ export class SupabaseWalletRepository implements WalletRepository {
   }
 
   async delete(id: string): Promise<void> {
-    const { error } = await this.supabase
-      .from('wallets')
-      .delete()
-      .eq('id', id)
+    const { error } = await this.supabase.from('wallets').delete().eq('id', id)
 
     if (error) throw error
   }
@@ -70,7 +67,7 @@ export class SupabaseWalletRepository implements WalletRepository {
       .order('created_at', { ascending: true })
 
     if (error) throw error
-    return wallets.map(w => this.mapToEntity(w))
+    return wallets.map((w) => this.mapToEntity(w))
   }
 
   async updateBalance(id: string, amount: number): Promise<Wallet> {
@@ -106,4 +103,4 @@ export class SupabaseWalletRepository implements WalletRepository {
       updatedAt: new Date(data.updated_at),
     }
   }
-} 
+}

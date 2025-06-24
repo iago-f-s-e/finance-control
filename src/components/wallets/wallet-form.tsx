@@ -1,11 +1,10 @@
 'use client'
 
-import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useForm } from 'react-hook-form'
 import * as z from 'zod'
 
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
 import {
   Form,
   FormControl,
@@ -14,8 +13,9 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form'
-import { useWallets } from '@/shared/hooks'
+import { Input } from '@/components/ui/input'
 import type { Wallet } from '@/domains/wallets/entities/wallet'
+import { useWallets } from '@/shared/hooks'
 
 const formSchema = z.object({
   name: z.string().min(1, 'Nome é obrigatório').max(100, 'Nome muito longo'),
@@ -42,7 +42,7 @@ export function WalletForm({ wallet, onSuccess }: WalletFormProps) {
 
   const onSubmit = async (data: FormData) => {
     const result = await createWallet(data)
-    
+
     if (result.success) {
       form.reset()
       onSuccess?.()
@@ -59,10 +59,7 @@ export function WalletForm({ wallet, onSuccess }: WalletFormProps) {
             <FormItem>
               <FormLabel>Nome da Carteira</FormLabel>
               <FormControl>
-                <Input 
-                  placeholder="Ex: Conta Corrente, Poupança..."
-                  {...field} 
-                />
+                <Input placeholder="Ex: Conta Corrente, Poupança..." {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -76,7 +73,7 @@ export function WalletForm({ wallet, onSuccess }: WalletFormProps) {
             <FormItem>
               <FormLabel>Moeda</FormLabel>
               <FormControl>
-                <Input 
+                <Input
                   placeholder="BRL"
                   maxLength={3}
                   style={{ textTransform: 'uppercase' }}
@@ -97,4 +94,4 @@ export function WalletForm({ wallet, onSuccess }: WalletFormProps) {
       </form>
     </Form>
   )
-} 
+}

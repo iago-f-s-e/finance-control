@@ -1,16 +1,22 @@
 'use client'
 
+import { Edit, Plus, Tag, Trash2 } from 'lucide-react'
 import { useEffect, useState } from 'react'
-import { Plus, Edit, Trash2, Tag } from 'lucide-react'
 
+import { CategoryForm } from '@/components/categories/category-form'
+import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
-import { Badge } from '@/components/ui/badge'
-import { useCategoryStore } from '@/shared/stores'
-import { container } from '@/infrastructure/container'
-import { CategoryForm } from '@/components/categories/category-form'
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog'
 import type { Category } from '@/domains/categories/entities/category'
+import { container } from '@/infrastructure/container'
+import { useCategoryStore } from '@/shared/stores'
 
 export default function CategoriesPage() {
   const {
@@ -73,8 +79,8 @@ export default function CategoriesPage() {
     loadCategories()
   }
 
-  const editingCategoryData = editingCategory 
-    ? categories.find(c => c.id === editingCategory)
+  const editingCategoryData = editingCategory
+    ? categories.find((c) => c.id === editingCategory)
     : undefined
 
   if (isLoading && categories.length === 0) {
@@ -87,7 +93,7 @@ export default function CategoriesPage() {
     )
   }
 
-  const CategoryList = ({ categories, title }: { categories: Category[], title: string }) => (
+  const CategoryList = ({ categories, title }: { categories: Category[]; title: string }) => (
     <Card>
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
@@ -97,9 +103,7 @@ export default function CategoriesPage() {
       </CardHeader>
       <CardContent>
         {categories.length === 0 ? (
-          <p className="text-muted-foreground text-center py-4">
-            Nenhuma categoria encontrada
-          </p>
+          <p className="text-muted-foreground text-center py-4">Nenhuma categoria encontrada</p>
         ) : (
           <div className="grid gap-3">
             {categories.map((category) => (
@@ -108,15 +112,11 @@ export default function CategoriesPage() {
                 className="flex items-center justify-between p-3 border rounded-lg"
               >
                 <div className="flex items-center gap-3">
-                  {category.icon && (
-                    <span className="text-xl">{category.icon}</span>
-                  )}
+                  {category.icon && <span className="text-xl">{category.icon}</span>}
                   <div>
                     <h3 className="font-medium">{category.name}</h3>
                     <div className="flex items-center gap-2">
-                      <Badge
-                        variant={category.type === 'INCOME' ? 'success' : 'destructive'}
-                      >
+                      <Badge variant={category.type === 'INCOME' ? 'success' : 'destructive'}>
                         {category.type === 'INCOME' ? 'Receita' : 'Despesa'}
                       </Badge>
                       {category.color && (
@@ -128,10 +128,10 @@ export default function CategoriesPage() {
                     </div>
                   </div>
                 </div>
-                
+
                 <div className="flex gap-2">
-                  <Dialog 
-                    open={editingCategory === category.id} 
+                  <Dialog
+                    open={editingCategory === category.id}
                     onOpenChange={(open) => setEditingCategory(open ? category.id : null)}
                   >
                     <DialogTrigger asChild>
@@ -143,13 +143,10 @@ export default function CategoriesPage() {
                       <DialogHeader>
                         <DialogTitle>Editar Categoria</DialogTitle>
                       </DialogHeader>
-                      <CategoryForm 
-                        category={editingCategoryData} 
-                        onSuccess={handleEditSuccess} 
-                      />
+                      <CategoryForm category={editingCategoryData} onSuccess={handleEditSuccess} />
                     </DialogContent>
                   </Dialog>
-                  
+
                   <Button
                     variant="ghost"
                     size="icon"
@@ -173,11 +170,9 @@ export default function CategoriesPage() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold">Categorias</h1>
-          <p className="text-muted-foreground">
-            Organize suas transações por categorias
-          </p>
+          <p className="text-muted-foreground">Organize suas transações por categorias</p>
         </div>
-        
+
         <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
           <DialogTrigger asChild>
             <Button>
@@ -210,14 +205,14 @@ export default function CategoriesPage() {
 
       {/* Categories Lists */}
       <div className="space-y-6">
-        <CategoryList 
-          categories={incomeCategories} 
-          title={`Receitas (${incomeCategories.length})`} 
+        <CategoryList
+          categories={incomeCategories}
+          title={`Receitas (${incomeCategories.length})`}
         />
-        
-        <CategoryList 
-          categories={expenseCategories} 
-          title={`Despesas (${expenseCategories.length})`} 
+
+        <CategoryList
+          categories={expenseCategories}
+          title={`Despesas (${expenseCategories.length})`}
         />
       </div>
 
@@ -249,4 +244,4 @@ export default function CategoriesPage() {
       )}
     </div>
   )
-} 
+}

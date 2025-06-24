@@ -1,12 +1,13 @@
 'use client'
 
-import { useEffect } from 'react'
-import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useEffect, useState } from 'react'
+import { useForm } from 'react-hook-form'
 import * as z from 'zod'
 
+import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
+import { Card, CardContent } from '@/components/ui/card'
 import {
   Form,
   FormControl,
@@ -15,12 +16,12 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form'
-import { Card, CardContent } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
-import { useTransactions } from '@/shared/hooks'
-import { useWalletStore, useCategoryStore } from '@/shared/stores'
+import { Input } from '@/components/ui/input'
 import { container } from '@/infrastructure/container'
+import { useTransactions } from '@/shared/hooks'
+import { useCategoryStore, useWalletStore } from '@/shared/stores'
 import { parseAmount } from '@/shared/utils/format'
+import { RecurrenceForm } from './recurrence-form'
 
 const formSchema = z.object({
   type: z.enum(['INCOME', 'EXPENSE'], {
@@ -33,6 +34,11 @@ const formSchema = z.object({
   dueDate: z.date(),
   isExecuted: z.boolean().default(false),
   isRecurring: z.boolean().default(false),
+  recurrencePattern: z.enum(['WEEKLY', 'BIWEEKLY', 'MONTHLY', 'YEARLY']).optional(),
+  recurrenceInterval: z.number().min(1).default(1),
+  recurrenceEndDate: z.date().optional(),
+  groupId: z.string().optional(),
+  isGroupParent: z.boolean().default(false),
 })
 
 type FormData = z.infer<typeof formSchema>
@@ -46,6 +52,7 @@ export function TransactionForm({ onSuccess, onCancel }: TransactionFormProps) {
   const { createTransaction, isLoading } = useTransactions()
   const { wallets, setWallets } = useWalletStore()
   const { categories, setCategories } = useCategoryStore()
+  const [showAdvanced, setShowAdvanced] = useState(false)
 
   useEffect(() => {
     // Load wallets and categories
@@ -61,7 +68,7 @@ export function TransactionForm({ onSuccess, onCancel }: TransactionFormProps) {
         console.error('Failed to load data:', error)
       }
     }
-    
+
     loadData()
   }, [setWallets, setCategories])
 
@@ -76,18 +83,32 @@ export function TransactionForm({ onSuccess, onCancel }: TransactionFormProps) {
       dueDate: new Date(),
       isExecuted: false,
       isRecurring: false,
+      recurrencePattern: 'MONTHLY',
+      recurrenceInterval: 1,
+      recurrenceEndDate: undefined,
+      groupId: undefined,
+      isGroupParent: false,
     },
   })
 
   const watchedType = form.watch('type')
-  const availableCategories = categories.filter(c => c.type === watchedType)
+  const availableCategories = categories.filter((c) => c.type === watchedType)
 
   const onSubmit = async (data: FormData) => {
     const result = await createTransaction(data)
-    
+
     if (result.success) {
       form.reset()
       onSuccess?.()
+    }
+  }
+
+  const handleRecurrenceChange = (recurrenceData: any) => {
+    form.setValue('isRecurring', recurrenceData.isRecurring)
+    if (recurrenceData.isRecurring) {
+      form.setValue('recurrencePattern', recurrenceData.recurrencePattern)
+      form.setValue('recurrenceInterval', recurrenceData.recurrenceInterval)
+      form.setValue('recurrenceEndDate', recurrenceData.recurrenceEndDate)
     }
   }
 
@@ -162,10 +183,7 @@ export function TransactionForm({ onSuccess, onCancel }: TransactionFormProps) {
             <FormItem>
               <FormLabel>Descrição</FormLabel>
               <FormControl>
-                <Input
-                  placeholder="Ex: Salário, Conta de luz..."
-                  {...field}
-                />
+                <Input placeholder="Ex: Salário, Conta de luz..." {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -233,8 +251,9 @@ export function TransactionForm({ onSuccess, onCancel }: TransactionFormProps) {
                 <div className="grid gap-2">
                   {availableCategories.length === 0 ? (
                     <p className="text-sm text-muted-foreground py-4 text-center">
-                      Nenhuma categoria encontrada para {watchedType === 'INCOME' ? 'receitas' : 'despesas'}.
-                      Crie uma categoria primeiro.
+                      Nenhuma categoria encontrada para{' '}
+                      {watchedType === 'INCOME' ? 'receitas' : 'despesas'}. Crie uma categoria
+                      primeiro.
                     </p>
                   ) : (
                     availableCategories.map((category) => (
@@ -249,9 +268,7 @@ export function TransactionForm({ onSuccess, onCancel }: TransactionFormProps) {
                       >
                         <CardContent className="p-4">
                           <div className="flex items-center gap-3">
-                            {category.icon && (
-                              <span className="text-xl">{category.icon}</span>
-                            )}
+                            {category.icon && <span className="text-xl">{category.icon}</span>}
                             <div className="flex-1">
                               <h4 className="font-medium">{category.name}</h4>
                             </div>
@@ -318,6 +335,52 @@ export function TransactionForm({ onSuccess, onCancel }: TransactionFormProps) {
           )}
         />
 
+        {/* Advanced Options Toggle */}
+        <div className="border-t pt-4">
+          <Button
+            type="button"
+            variant="ghost"
+            onClick={() => setShowAdvanced(!showAdvanced)}
+            className="w-full justify-center"
+          >
+            {showAdvanced ? '▼' : '▶'} Opções Avançadas
+          </Button>
+        </div>
+
+        {/* Advanced Options */}
+        {showAdvanced && (
+          <div className="space-y-6">
+            {/* Recurrence */}
+            <RecurrenceForm
+              value={{
+                isRecurring: form.watch('isRecurring'),
+                recurrencePattern: form.watch('recurrencePattern'),
+                recurrenceInterval: form.watch('recurrenceInterval'),
+                recurrenceEndDate: form.watch('recurrenceEndDate'),
+              }}
+              onChange={handleRecurrenceChange}
+            />
+
+            {/* Group ID for Credit Card */}
+            <FormField
+              control={form.control}
+              name="groupId"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>ID do Grupo (Cartão de Crédito)</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Ex: cartao-visa-2024-01" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                  <p className="text-xs text-muted-foreground">
+                    Use para agrupar transações da mesma fatura de cartão
+                  </p>
+                </FormItem>
+              )}
+            />
+          </div>
+        )}
+
         {/* Action Buttons */}
         <div className="flex gap-2">
           {onCancel && (
@@ -332,4 +395,4 @@ export function TransactionForm({ onSuccess, onCancel }: TransactionFormProps) {
       </form>
     </Form>
   )
-} 
+}

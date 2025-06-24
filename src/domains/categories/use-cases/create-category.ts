@@ -1,6 +1,6 @@
-import type { CategoryRepository } from '../repositories/category-repository'
-import type { CreateCategoryDTO, Category } from '../entities/category'
 import type { Result } from '@/shared/types/common'
+import type { Category, CreateCategoryDTO } from '../entities/category'
+import type { CategoryRepository } from '../repositories/category-repository'
 
 export class CreateCategoryUseCase {
   constructor(private readonly categoryRepository: CategoryRepository) {}
@@ -28,4 +28,4 @@ export class CreateCategoryUseCase {
       }
     }
   }
-} 
+}

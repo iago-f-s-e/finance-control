@@ -1,11 +1,10 @@
 'use client'
 
-import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useForm } from 'react-hook-form'
 import * as z from 'zod'
 
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
 import {
   Form,
   FormControl,
@@ -14,9 +13,10 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form'
+import { Input } from '@/components/ui/input'
+import type { Category } from '@/domains/categories/entities/category'
 import { container } from '@/infrastructure/container'
 import { useCategoryStore } from '@/shared/stores'
-import type { Category } from '@/domains/categories/entities/category'
 
 const formSchema = z.object({
   name: z.string().min(1, 'Nome é obrigatório').max(100, 'Nome muito longo'),
@@ -49,10 +49,10 @@ export function CategoryForm({ category, onSuccess }: CategoryFormProps) {
 
   const onSubmit = async (data: FormData) => {
     setLoading(true)
-    
+
     try {
       const result = await container.createCategoryUseCase.execute(data)
-      
+
       if (result.success) {
         addCategory(result.data)
         form.reset()
@@ -69,14 +69,33 @@ export function CategoryForm({ category, onSuccess }: CategoryFormProps) {
   }
 
   const commonIcons = [
-    '💰', '💻', '📈', '💵', // Income
-    '🍽️', '🚗', '🏠', '🏥', '📚', '🎮', '👕', '💸', // Expense
+    '💰',
+    '💻',
+    '📈',
+    '💵', // Income
+    '🍽️',
+    '🚗',
+    '🏠',
+    '🏥',
+    '📚',
+    '🎮',
+    '👕',
+    '💸', // Expense
   ]
 
   const commonColors = [
-    '#ef4444', '#f97316', '#eab308', '#22c55e',
-    '#06b6d4', '#3b82f6', '#8b5cf6', '#ec4899',
-    '#6b7280', '#374151', '#1f2937', '#111827',
+    '#ef4444',
+    '#f97316',
+    '#eab308',
+    '#22c55e',
+    '#06b6d4',
+    '#3b82f6',
+    '#8b5cf6',
+    '#ec4899',
+    '#6b7280',
+    '#374151',
+    '#1f2937',
+    '#111827',
   ]
 
   return (
@@ -89,10 +108,7 @@ export function CategoryForm({ category, onSuccess }: CategoryFormProps) {
             <FormItem>
               <FormLabel>Nome da Categoria</FormLabel>
               <FormControl>
-                <Input 
-                  placeholder="Ex: Alimentação, Salário..."
-                  {...field} 
-                />
+                <Input placeholder="Ex: Alimentação, Salário..." {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -138,10 +154,7 @@ export function CategoryForm({ category, onSuccess }: CategoryFormProps) {
               <FormLabel>Ícone (opcional)</FormLabel>
               <FormControl>
                 <div className="space-y-2">
-                  <Input 
-                    placeholder="Escolha um emoji..."
-                    {...field} 
-                  />
+                  <Input placeholder="Escolha um emoji..." {...field} />
                   <div className="grid grid-cols-8 gap-2">
                     {commonIcons.map((icon) => (
                       <Button
@@ -172,15 +185,8 @@ export function CategoryForm({ category, onSuccess }: CategoryFormProps) {
               <FormControl>
                 <div className="space-y-2">
                   <div className="flex items-center gap-2">
-                    <Input 
-                      type="color"
-                      className="w-12 h-10 p-1 border rounded"
-                      {...field} 
-                    />
-                    <Input 
-                      placeholder="#6b7280"
-                      {...field} 
-                    />
+                    <Input type="color" className="w-12 h-10 p-1 border rounded" {...field} />
+                    <Input placeholder="#6b7280" {...field} />
                   </div>
                   <div className="grid grid-cols-6 gap-2">
                     {commonColors.map((color) => (
@@ -210,4 +216,4 @@ export function CategoryForm({ category, onSuccess }: CategoryFormProps) {
       </form>
     </Form>
   )
-} 
+}

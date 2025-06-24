@@ -1,7 +1,7 @@
-import { create } from 'zustand'
-import { subscribeWithSelector } from 'zustand/middleware'
 import type { Transaction } from '@/domains/transactions/entities/transaction'
 import type { TransactionFilters } from '@/domains/transactions/repositories/transaction-repository'
+import { create } from 'zustand'
+import { subscribeWithSelector } from 'zustand/middleware'
 
 interface TransactionState {
   // State
@@ -23,6 +23,7 @@ interface TransactionState {
   addTransaction: (transaction: Transaction) => void
   updateTransaction: (id: string, transaction: Transaction) => void
   removeTransaction: (id: string) => void
+  setSelectedTransactions: (transactionIds: string[]) => void
   toggleTransactionSelection: (id: string) => void
   selectAllTransactions: () => void
   clearTransactionSelection: () => void
@@ -45,24 +46,24 @@ export const useTransactionStore = create<TransactionState>()(
     get selectedTransactionsSum() {
       const { transactions, selectedTransactions } = get()
       return transactions
-        .filter(t => selectedTransactions.includes(t.id))
+        .filter((t) => selectedTransactions.includes(t.id))
         .reduce((sum, t) => sum + (t.type === 'INCOME' ? t.amount : -t.amount), 0)
     },
 
     get incomeTransactions() {
-      return get().transactions.filter(t => t.type === 'INCOME')
+      return get().transactions.filter((t) => t.type === 'INCOME')
     },
 
     get expenseTransactions() {
-      return get().transactions.filter(t => t.type === 'EXPENSE')
+      return get().transactions.filter((t) => t.type === 'EXPENSE')
     },
 
     get executedTransactions() {
-      return get().transactions.filter(t => t.isExecuted)
+      return get().transactions.filter((t) => t.isExecuted)
     },
 
     get pendingTransactions() {
-      return get().transactions.filter(t => !t.isExecuted)
+      return get().transactions.filter((t) => !t.isExecuted)
     },
 
     // Actions
@@ -75,29 +76,30 @@ export const useTransactionStore = create<TransactionState>()(
 
     updateTransaction: (id, transaction) =>
       set((state) => ({
-        transactions: state.transactions.map(t => t.id === id ? transaction : t),
+        transactions: state.transactions.map((t) => (t.id === id ? transaction : t)),
       })),
 
     removeTransaction: (id) =>
       set((state) => ({
-        transactions: state.transactions.filter(t => t.id !== id),
-        selectedTransactions: state.selectedTransactions.filter(tid => tid !== id),
+        transactions: state.transactions.filter((t) => t.id !== id),
+        selectedTransactions: state.selectedTransactions.filter((tid) => tid !== id),
       })),
+
+    setSelectedTransactions: (transactionIds) => set({ selectedTransactions: transactionIds }),
 
     toggleTransactionSelection: (id) =>
       set((state) => ({
         selectedTransactions: state.selectedTransactions.includes(id)
-          ? state.selectedTransactions.filter(tid => tid !== id)
+          ? state.selectedTransactions.filter((tid) => tid !== id)
           : [...state.selectedTransactions, id],
       })),
 
     selectAllTransactions: () =>
       set((state) => ({
-        selectedTransactions: state.transactions.map(t => t.id),
+        selectedTransactions: state.transactions.map((t) => t.id),
       })),
 
-    clearTransactionSelection: () =>
-      set({ selectedTransactions: [] }),
+    clearTransactionSelection: () => set({ selectedTransactions: [] }),
 
     setFilters: (filters) =>
       set((state) => ({
@@ -109,5 +111,5 @@ export const useTransactionStore = create<TransactionState>()(
     setError: (error) => set({ error }),
 
     clearError: () => set({ error: null }),
-  }))
-) 
+  })),
+)

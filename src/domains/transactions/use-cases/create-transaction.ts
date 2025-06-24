@@ -1,12 +1,12 @@
-import type { TransactionRepository } from '../repositories/transaction-repository'
 import type { WalletRepository } from '@/domains/wallets/repositories/wallet-repository'
-import type { CreateTransactionDTO, Transaction } from '../entities/transaction'
 import type { Result } from '@/shared/types/common'
+import type { CreateTransactionDTO, Transaction } from '../entities/transaction'
+import type { TransactionRepository } from '../repositories/transaction-repository'
 
 export class CreateTransactionUseCase {
   constructor(
     private readonly transactionRepository: TransactionRepository,
-    private readonly walletRepository: WalletRepository
+    private readonly walletRepository: WalletRepository,
   ) {}
 
   async execute(data: CreateTransactionDTO): Promise<Result<Transaction>> {
@@ -40,4 +40,4 @@ export class CreateTransactionUseCase {
       }
     }
   }
-} 
+}

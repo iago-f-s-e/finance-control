@@ -37,8 +37,8 @@
         "noForEach": "off"
       },
       "suspicious": {
-        "noExplicitAny": "warn",
-        "noArrayIndexKey": "warn"
+        "noExplicitAny": "off",
+        "noArrayIndexKey": "off"
       }
     }
   },
@@ -46,8 +46,7 @@
     "formatter": {
       "quoteStyle": "single",
       "jsxQuoteStyle": "double",
-      "semicolons": "asNeeded",
-      "trailingComma": "es5"
+      "semicolons": "asNeeded"
     }
   }
 } 

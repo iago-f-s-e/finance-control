@@ -1,13 +1,13 @@
-import type { SupabaseClient } from '@/infrastructure/database/supabase'
-import type { 
-  TransactionRepository, 
-  TransactionFilters 
-} from '@/domains/transactions/repositories/transaction-repository'
-import type { 
-  Transaction, 
-  CreateTransactionDTO, 
-  UpdateTransactionDTO 
+import type {
+  CreateTransactionDTO,
+  Transaction,
+  UpdateTransactionDTO,
 } from '@/domains/transactions/entities/transaction'
+import type {
+  TransactionFilters,
+  TransactionRepository,
+} from '@/domains/transactions/repositories/transaction-repository'
+import type { SupabaseClient } from '@/infrastructure/database/supabase'
 
 export class SupabaseTransactionRepository implements TransactionRepository {
   constructor(private readonly supabase: SupabaseClient) {}
@@ -39,7 +39,7 @@ export class SupabaseTransactionRepository implements TransactionRepository {
 
   async update(id: string, data: UpdateTransactionDTO): Promise<Transaction> {
     const updateData: any = {}
-    
+
     if (data.walletId) updateData.wallet_id = data.walletId
     if (data.categoryId) updateData.category_id = data.categoryId
     if (data.amount !== undefined) updateData.amount = data.amount
@@ -47,9 +47,11 @@ export class SupabaseTransactionRepository implements TransactionRepository {
     if (data.dueDate) updateData.due_date = data.dueDate.toISOString()
     if (data.isRecurring !== undefined) updateData.is_recurring = data.isRecurring
     if (data.recurrencePattern) updateData.recurrence_pattern = data.recurrencePattern
-    if (data.recurrenceInterval !== undefined) updateData.recurrence_interval = data.recurrenceInterval
-    if (data.recurrenceEndDate) updateData.recurrence_end_date = data.recurrenceEndDate.toISOString()
-    
+    if (data.recurrenceInterval !== undefined)
+      updateData.recurrence_interval = data.recurrenceInterval
+    if (data.recurrenceEndDate)
+      updateData.recurrence_end_date = data.recurrenceEndDate.toISOString()
+
     updateData.updated_at = new Date().toISOString()
 
     const { data: transaction, error } = await this.supabase
@@ -64,10 +66,7 @@ export class SupabaseTransactionRepository implements TransactionRepository {
   }
 
   async delete(id: string): Promise<void> {
-    const { error } = await this.supabase
-      .from('transactions')
-      .delete()
-      .eq('id', id)
+    const { error } = await this.supabase.from('transactions').delete().eq('id', id)
 
     if (error) throw error
   }
@@ -102,7 +101,7 @@ export class SupabaseTransactionRepository implements TransactionRepository {
     const { data: transactions, error } = await query.order('due_date', { ascending: false })
 
     if (error) throw error
-    return transactions.map(t => this.mapToEntity(t))
+    return transactions.map((t) => this.mapToEntity(t))
   }
 
   async findByIds(ids: string[]): Promise<Transaction[]> {
@@ -112,7 +111,7 @@ export class SupabaseTransactionRepository implements TransactionRepository {
       .in('id', ids)
 
     if (error) throw error
-    return transactions.map(t => this.mapToEntity(t))
+    return transactions.map((t) => this.mapToEntity(t))
   }
 
   async executeMany(ids: string[]): Promise<Transaction[]> {
@@ -127,7 +126,7 @@ export class SupabaseTransactionRepository implements TransactionRepository {
       .select()
 
     if (error) throw error
-    return transactions.map(t => this.mapToEntity(t))
+    return transactions.map((t) => this.mapToEntity(t))
   }
 
   async findPendingRecurring(): Promise<Transaction[]> {
@@ -139,7 +138,7 @@ export class SupabaseTransactionRepository implements TransactionRepository {
       .lte('due_date', new Date().toISOString())
 
     if (error) throw error
-    return transactions.map(t => this.mapToEntity(t))
+    return transactions.map((t) => this.mapToEntity(t))
   }
 
   async findByGroupId(groupId: string): Promise<Transaction[]> {
@@ -150,7 +149,7 @@ export class SupabaseTransactionRepository implements TransactionRepository {
       .order('due_date', { ascending: true })
 
     if (error) throw error
-    return transactions.map(t => this.mapToEntity(t))
+    return transactions.map((t) => this.mapToEntity(t))
   }
 
   private mapToEntity(data: any): Transaction {
@@ -175,4 +174,4 @@ export class SupabaseTransactionRepository implements TransactionRepository {
       updatedAt: new Date(data.updated_at),
     }
   }
-} 
+}

@@ -1,7 +1,11 @@
-import type { SupabaseClient } from '@/infrastructure/database/supabase'
+import type {
+  Category,
+  CreateCategoryDTO,
+  UpdateCategoryDTO,
+} from '@/domains/categories/entities/category'
 import type { CategoryRepository } from '@/domains/categories/repositories/category-repository'
-import type { Category, CreateCategoryDTO, UpdateCategoryDTO } from '@/domains/categories/entities/category'
 import type { TransactionType } from '@/domains/transactions/entities/transaction'
+import type { SupabaseClient } from '@/infrastructure/database/supabase'
 
 export class SupabaseCategoryRepository implements CategoryRepository {
   constructor(private readonly supabase: SupabaseClient) {}
@@ -24,7 +28,7 @@ export class SupabaseCategoryRepository implements CategoryRepository {
 
   async update(id: string, data: UpdateCategoryDTO): Promise<Category> {
     const updateData: any = {}
-    
+
     if (data.name !== undefined) updateData.name = data.name
     if (data.color !== undefined) updateData.color = data.color
     if (data.icon !== undefined) updateData.icon = data.icon
@@ -41,10 +45,7 @@ export class SupabaseCategoryRepository implements CategoryRepository {
   }
 
   async delete(id: string): Promise<void> {
-    const { error } = await this.supabase
-      .from('categories')
-      .delete()
-      .eq('id', id)
+    const { error } = await this.supabase.from('categories').delete().eq('id', id)
 
     if (error) throw error
   }
@@ -71,7 +72,7 @@ export class SupabaseCategoryRepository implements CategoryRepository {
       .order('name', { ascending: true })
 
     if (error) throw error
-    return categories.map(c => this.mapToEntity(c))
+    return categories.map((c) => this.mapToEntity(c))
   }
 
   async findByType(type: TransactionType): Promise<Category[]> {
@@ -82,7 +83,7 @@ export class SupabaseCategoryRepository implements CategoryRepository {
       .order('name', { ascending: true })
 
     if (error) throw error
-    return categories.map(c => this.mapToEntity(c))
+    return categories.map((c) => this.mapToEntity(c))
   }
 
   private mapToEntity(data: any): Category {
@@ -95,4 +96,4 @@ export class SupabaseCategoryRepository implements CategoryRepository {
       createdAt: new Date(data.created_at),
     }
   }
-} 
+}

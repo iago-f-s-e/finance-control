@@ -1,31 +1,31 @@
 'use client'
 
-import Link from "next/link"
-import { usePathname } from "next/navigation"
-import { Home, Wallet, Tag, TrendingUp, Plus } from "lucide-react"
+import { Home, Plus, Tag, TrendingUp, Wallet } from 'lucide-react'
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 
-import { cn } from "@/shared/utils/cn"
-import { Button } from "@/components/ui/button"
+import { Button } from '@/components/ui/button'
+import { cn } from '@/shared/utils/cn'
 
 const navItems = [
   {
-    href: "/",
-    label: "Dashboard",
+    href: '/',
+    label: 'Dashboard',
     icon: Home,
   },
   {
-    href: "/wallets",
-    label: "Carteiras",
+    href: '/wallets',
+    label: 'Carteiras',
     icon: Wallet,
   },
   {
-    href: "/categories",
-    label: "Categorias", 
+    href: '/categories',
+    label: 'Categorias',
     icon: Tag,
   },
   {
-    href: "/analytics",
-    label: "Analytics",
+    href: '/analytics',
+    label: 'Analytics',
     icon: TrendingUp,
   },
 ]
@@ -39,16 +39,16 @@ export function MobileNav() {
         {navItems.map((item) => {
           const Icon = item.icon
           const isActive = pathname === item.href
-          
+
           return (
             <Link
               key={item.href}
               href={item.href}
               className={cn(
-                "flex flex-col items-center gap-1 rounded-lg px-3 py-2 text-xs transition-colors",
+                'flex flex-col items-center gap-1 rounded-lg px-3 py-2 text-xs transition-colors',
                 isActive
-                  ? "text-primary bg-primary/10"
-                  : "text-muted-foreground hover:text-foreground"
+                  ? 'text-primary bg-primary/10'
+                  : 'text-muted-foreground hover:text-foreground',
               )}
             >
               <Icon className="h-5 w-5" />
@@ -56,7 +56,7 @@ export function MobileNav() {
             </Link>
           )
         })}
-        
+
         {/* Floating Action Button */}
         <Button
           asChild
@@ -71,4 +71,4 @@ export function MobileNav() {
       </nav>
     </div>
   )
-} 
+}

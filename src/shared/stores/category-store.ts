@@ -1,6 +1,6 @@
-import { create } from 'zustand'
 import type { Category } from '@/domains/categories/entities/category'
 import type { TransactionType } from '@/domains/transactions/entities/transaction'
+import { create } from 'zustand'
 
 interface CategoryState {
   // State
@@ -31,11 +31,11 @@ export const useCategoryStore = create<CategoryState>((set, get) => ({
 
   // Computed values
   get incomeCategories() {
-    return get().categories.filter(c => c.type === 'INCOME')
+    return get().categories.filter((c) => c.type === 'INCOME')
   },
 
   get expenseCategories() {
-    return get().categories.filter(c => c.type === 'EXPENSE')
+    return get().categories.filter((c) => c.type === 'EXPENSE')
   },
 
   // Actions
@@ -48,16 +48,16 @@ export const useCategoryStore = create<CategoryState>((set, get) => ({
 
   updateCategory: (id, category) =>
     set((state) => ({
-      categories: state.categories.map(c => c.id === id ? category : c),
+      categories: state.categories.map((c) => (c.id === id ? category : c)),
     })),
 
   removeCategory: (id) =>
     set((state) => ({
-      categories: state.categories.filter(c => c.id !== id),
+      categories: state.categories.filter((c) => c.id !== id),
     })),
 
   getCategoriesByType: (type) => {
-    return get().categories.filter(c => c.type === type)
+    return get().categories.filter((c) => c.type === type)
   },
 
   setLoading: (isLoading) => set({ isLoading }),
@@ -65,4 +65,4 @@ export const useCategoryStore = create<CategoryState>((set, get) => ({
   setError: (error) => set({ error }),
 
   clearError: () => set({ error: null }),
-})) 
+}))

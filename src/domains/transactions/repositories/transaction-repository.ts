@@ -1,4 +1,8 @@
-import type { Transaction, CreateTransactionDTO, UpdateTransactionDTO } from '../entities/transaction'
+import type {
+  CreateTransactionDTO,
+  Transaction,
+  UpdateTransactionDTO,
+} from '../entities/transaction'
 
 export interface TransactionFilters {
   walletId?: string
@@ -21,4 +25,4 @@ export interface TransactionRepository {
   executeMany(ids: string[]): Promise<Transaction[]>
   findPendingRecurring(): Promise<Transaction[]>
   findByGroupId(groupId: string): Promise<Transaction[]>
-} 
+}

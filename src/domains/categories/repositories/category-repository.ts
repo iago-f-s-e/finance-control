@@ -1,5 +1,5 @@
-import type { Category, CreateCategoryDTO, UpdateCategoryDTO } from '../entities/category'
 import type { TransactionType } from '@/domains/transactions/entities/transaction'
+import type { Category, CreateCategoryDTO, UpdateCategoryDTO } from '../entities/category'
 
 export interface CategoryRepository {
   create(data: CreateCategoryDTO): Promise<Category>
@@ -8,4 +8,4 @@ export interface CategoryRepository {
   findById(id: string): Promise<Category | null>
   findAll(): Promise<Category[]>
   findByType(type: TransactionType): Promise<Category[]>
-} 
+}

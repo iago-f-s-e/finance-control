@@ -1,26 +1,26 @@
 'use client'
 
+import { ArrowRightLeft, Edit, Plus, Trash2, Wallet } from 'lucide-react'
+import Link from 'next/link'
 import { useEffect, useState } from 'react'
-import { Plus, Edit, Trash2, Wallet } from 'lucide-react'
 
+import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
-import { Badge } from '@/components/ui/badge'
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog'
+import { WalletForm } from '@/components/wallets/wallet-form'
 import { useWallets } from '@/shared/hooks'
 import { formatCurrency } from '@/shared/utils/format'
-import { WalletForm } from '@/components/wallets/wallet-form'
 
 export default function WalletsPage() {
-  const {
-    wallets,
-    totalBalance,
-    isLoading,
-    error,
-    loadWallets,
-    deleteWallet,
-    clearError,
-  } = useWallets()
+  const { wallets, totalBalance, isLoading, error, loadWallets, deleteWallet, clearError } =
+    useWallets()
 
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false)
   const [editingWallet, setEditingWallet] = useState<string | null>(null)
@@ -59,25 +59,32 @@ export default function WalletsPage() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold">Carteiras</h1>
-          <p className="text-muted-foreground">
-            Gerencie suas carteiras e contas
-          </p>
+          <p className="text-muted-foreground">Gerencie suas carteiras e contas</p>
         </div>
-        
-        <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
-          <DialogTrigger asChild>
-            <Button>
-              <Plus className="h-4 w-4 mr-2" />
-              Nova Carteira
-            </Button>
-          </DialogTrigger>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Criar Nova Carteira</DialogTitle>
-            </DialogHeader>
-            <WalletForm onSuccess={handleCreateSuccess} />
-          </DialogContent>
-        </Dialog>
+
+        <div className="flex gap-2">
+          <Button asChild variant="outline">
+            <Link href="/wallets/transfer">
+              <ArrowRightLeft className="h-4 w-4 mr-2" />
+              Transferir
+            </Link>
+          </Button>
+
+          <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
+            <DialogTrigger asChild>
+              <Button>
+                <Plus className="h-4 w-4 mr-2" />
+                Nova Carteira
+              </Button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Criar Nova Carteira</DialogTitle>
+              </DialogHeader>
+              <WalletForm onSuccess={handleCreateSuccess} />
+            </DialogContent>
+          </Dialog>
+        </div>
       </div>
 
       {/* Error Message */}
@@ -103,12 +110,8 @@ export default function WalletsPage() {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold">
-            {formatCurrency(totalBalance)}
-          </div>
-          <p className="text-sm text-muted-foreground">
-            Soma de todas as carteiras
-          </p>
+          <div className="text-2xl font-bold">{formatCurrency(totalBalance)}</div>
+          <p className="text-sm text-muted-foreground">Soma de todas as carteiras</p>
         </CardContent>
       </Card>
 
@@ -155,10 +158,10 @@ export default function WalletsPage() {
                       Criada em {new Date(wallet.createdAt).toLocaleDateString('pt-BR')}
                     </p>
                   </div>
-                  
+
                   <div className="flex gap-2">
-                    <Dialog 
-                      open={editingWallet === wallet.id} 
+                    <Dialog
+                      open={editingWallet === wallet.id}
                       onOpenChange={(open) => setEditingWallet(open ? wallet.id : null)}
                     >
                       <DialogTrigger asChild>
@@ -170,13 +173,10 @@ export default function WalletsPage() {
                         <DialogHeader>
                           <DialogTitle>Editar Carteira</DialogTitle>
                         </DialogHeader>
-                        <WalletForm 
-                          wallet={wallet} 
-                          onSuccess={handleEditSuccess} 
-                        />
+                        <WalletForm wallet={wallet} onSuccess={handleEditSuccess} />
                       </DialogContent>
                     </Dialog>
-                    
+
                     <Button
                       variant="ghost"
                       size="icon"
@@ -194,4 +194,4 @@ export default function WalletsPage() {
       </div>
     </div>
   )
-} 
+}

@@ -27,12 +27,10 @@ export default function RootLayout({
     <html lang="pt-BR">
       <body className={inter.className}>
         <div className="min-h-screen bg-background font-sans antialiased">
-          <main className="pb-20">
-            {children}
-          </main>
+          <main className="pb-20">{children}</main>
           <MobileNav />
         </div>
       </body>
     </html>
   )
-} 
+}

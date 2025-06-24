@@ -59,4 +59,4 @@ export class WalletEntity {
   toJSON(): Wallet {
     return { ...this.wallet }
   }
-} 
+}

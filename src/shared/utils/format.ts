@@ -51,4 +51,4 @@ export function formatCompactNumber(value: number): string {
     notation: 'compact',
     compactDisplay: 'short',
   }).format(value)
-} 
+}

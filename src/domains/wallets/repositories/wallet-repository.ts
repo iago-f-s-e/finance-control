@@ -1,4 +1,4 @@
-import type { Wallet, CreateWalletDTO, UpdateWalletDTO } from '../entities/wallet'
+import type { CreateWalletDTO, UpdateWalletDTO, Wallet } from '../entities/wallet'
 
 export interface WalletRepository {
   create(data: CreateWalletDTO): Promise<Wallet>
@@ -7,4 +7,4 @@ export interface WalletRepository {
   findById(id: string): Promise<Wallet | null>
   findAll(): Promise<Wallet[]>
   updateBalance(id: string, amount: number): Promise<Wallet>
-} 
+}

@@ -1,6 +1,6 @@
-import type { WalletRepository } from '../repositories/wallet-repository'
-import type { CreateWalletDTO, Wallet } from '../entities/wallet'
 import type { Result } from '@/shared/types/common'
+import type { CreateWalletDTO, Wallet } from '../entities/wallet'
+import type { WalletRepository } from '../repositories/wallet-repository'
 
 export class CreateWalletUseCase {
   constructor(private readonly walletRepository: WalletRepository) {}
@@ -31,4 +31,4 @@ export class CreateWalletUseCase {
       }
     }
   }
-} 
+}

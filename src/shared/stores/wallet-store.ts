@@ -1,5 +1,5 @@
-import { create } from 'zustand'
 import type { Wallet } from '@/domains/wallets/entities/wallet'
+import { create } from 'zustand'
 
 interface WalletState {
   // State
@@ -37,7 +37,7 @@ export const useWalletStore = create<WalletState>((set, get) => ({
 
   get selectedWallet() {
     const { wallets, selectedWalletId } = get()
-    return wallets.find(w => w.id === selectedWalletId) || null
+    return wallets.find((w) => w.id === selectedWalletId) || null
   },
 
   // Actions
@@ -50,12 +50,12 @@ export const useWalletStore = create<WalletState>((set, get) => ({
 
   updateWallet: (id, wallet) =>
     set((state) => ({
-      wallets: state.wallets.map(w => w.id === id ? wallet : w),
+      wallets: state.wallets.map((w) => (w.id === id ? wallet : w)),
     })),
 
   removeWallet: (id) =>
     set((state) => ({
-      wallets: state.wallets.filter(w => w.id !== id),
+      wallets: state.wallets.filter((w) => w.id !== id),
       selectedWalletId: state.selectedWalletId === id ? null : state.selectedWalletId,
     })),
 
@@ -66,4 +66,4 @@ export const useWalletStore = create<WalletState>((set, get) => ({
   setError: (error) => set({ error }),
 
   clearError: () => set({ error: null }),
-})) 
+}))

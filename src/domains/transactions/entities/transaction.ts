@@ -11,18 +11,18 @@ export interface Transaction {
   dueDate: Date
   isExecuted: boolean
   executedAt?: Date
-  
+
   // Recurrence
   isRecurring: boolean
   recurrencePattern?: RecurrencePattern
   recurrenceInterval: number
   recurrenceEndDate?: Date
   parentTransactionId?: string
-  
+
   // Grouping (Credit Card)
   groupId?: string
   isGroupParent: boolean
-  
+
   createdAt: Date
   updatedAt: Date
 }
@@ -85,10 +85,7 @@ export class TransactionEntity {
   isDueThisMonth(): boolean {
     const now = new Date()
     const dueDate = this.dueDate
-    return (
-      dueDate.getFullYear() === now.getFullYear() &&
-      dueDate.getMonth() === now.getMonth()
-    )
+    return dueDate.getFullYear() === now.getFullYear() && dueDate.getMonth() === now.getMonth()
   }
 
   execute(): Transaction {
@@ -107,4 +104,4 @@ export class TransactionEntity {
   toJSON(): Transaction {
     return { ...this.transaction }
   }
-} 
+}

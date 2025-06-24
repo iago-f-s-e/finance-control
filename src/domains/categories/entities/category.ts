@@ -56,4 +56,4 @@ export class CategoryEntity {
   toJSON(): Category {
     return { ...this.category }
   }
-} 
+}
