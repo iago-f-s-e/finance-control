@@ -213,16 +213,16 @@ CREATE TABLE wallet_transfers (
 - [x] Validações
 
 ### Fase 5: Advanced Features (Sprint 9-10)
-- [ ] Sistema de recorrência
-- [ ] Agrupamento (cartão)
-- [ ] Efetivação em lote
-- [ ] Transferências entre carteiras
+- [x] Sistema de recorrência
+- [x] Agrupamento (cartão)
+- [x] Efetivação em lote
+- [x] Transferências entre carteiras
 
 ### Fase 6: Analytics (Sprint 11-12)
-- [ ] Dashboard principal
-- [ ] Gráficos (Chart.js/Recharts)
-- [ ] Filtros avançados
-- [ ] Relatórios
+- [x] Dashboard principal
+- [x] Gráficos (Chart.js/Recharts)
+- [x] Filtros avançados
+- [x] Relatórios
 
 ## ❌ Decisões Adiadas
 
