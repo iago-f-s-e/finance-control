@@ -2,6 +2,8 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
 
+import { MobileNav } from '@/components/navigation/mobile-nav'
+
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
@@ -25,7 +27,10 @@ export default function RootLayout({
     <html lang="pt-BR">
       <body className={inter.className}>
         <div className="min-h-screen bg-background font-sans antialiased">
-          {children}
+          <main className="pb-20">
+            {children}
+          </main>
+          <MobileNav />
         </div>
       </body>
     </html>

@@ -26,7 +26,8 @@
       "recommended": true,
       "style": {
         "noNonNullAssertion": "off",
-        "useTemplate": "error"
+        "useTemplate": "error",
+        "useImportType": "off"
       },
       "correctness": {
         "noUnusedVariables": "error",

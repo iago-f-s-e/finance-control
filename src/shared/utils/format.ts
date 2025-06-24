@@ -1,3 +1,6 @@
+/**
+ * Format currency values
+ */
 export function formatCurrency(amount: number, currency = 'BRL'): string {
   return new Intl.NumberFormat('pt-BR', {
     style: 'currency',
@@ -5,23 +8,47 @@ export function formatCurrency(amount: number, currency = 'BRL'): string {
   }).format(amount)
 }
 
-export function formatDate(date: Date): string {
-  return new Intl.DateTimeFormat('pt-BR').format(date)
+/**
+ * Format dates for display
+ */
+export function formatDate(date: Date | string): string {
+  const dateObj = typeof date === 'string' ? new Date(date) : date
+  return dateObj.toLocaleDateString('pt-BR')
 }
 
-export function formatDateTime(date: Date): string {
-  return new Intl.DateTimeFormat('pt-BR', {
-    dateStyle: 'short',
-    timeStyle: 'short',
-  }).format(date)
+/**
+ * Format dates with time
+ */
+export function formatDateTime(date: Date | string): string {
+  const dateObj = typeof date === 'string' ? new Date(date) : date
+  return dateObj.toLocaleString('pt-BR')
 }
 
+/**
+ * Parse amount from string input
+ */
 export function parseAmount(value: string): number {
-  // Remove non-numeric characters except comma and dot
-  const cleaned = value.replace(/[^\d,.-]/g, '')
-  
-  // Replace comma with dot for parsing
-  const normalized = cleaned.replace(',', '.')
-  
-  return Number.parseFloat(normalized) || 0
+  const cleanValue = value.replace(/[^\d,.-]/g, '').replace(',', '.')
+  return Number.parseFloat(cleanValue) || 0
+}
+
+/**
+ * Format percentage values
+ */
+export function formatPercentage(value: number): string {
+  return new Intl.NumberFormat('pt-BR', {
+    style: 'percent',
+    minimumFractionDigits: 1,
+    maximumFractionDigits: 2,
+  }).format(value / 100)
+}
+
+/**
+ * Format large numbers with K, M, B suffixes
+ */
+export function formatCompactNumber(value: number): string {
+  return new Intl.NumberFormat('pt-BR', {
+    notation: 'compact',
+    compactDisplay: 'short',
+  }).format(value)
 } 

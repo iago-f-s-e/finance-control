@@ -189,10 +189,10 @@ CREATE TABLE wallet_transfers (
 ## 🛣️ Roadmap de Implementação
 
 ### Fase 1: Foundation (Sprint 1-2)
-- [ ] Setup Next.js + TypeScript + Tailwind
-- [ ] Configuração Supabase + Migrations
-- [ ] Estrutura de pastas DDD
-- [ ] Configuração Biome + Git hooks
+- [x] Setup Next.js + TypeScript + Tailwind
+- [x] Configuração Supabase + Migrations
+- [x] Estrutura de pastas DDD
+- [x] Configuração Biome + Git hooks
 
 ### Fase 2: Core Domain (Sprint 3-4)  
 - [x] Entities: Transaction, Wallet, Category
@@ -201,16 +201,16 @@ CREATE TABLE wallet_transfers (
 - [x] Zustand stores
 
 ### Fase 3: Wallet & Categories (Sprint 5-6)
-- [ ] CRUD Wallets
-- [ ] CRUD Categories  
-- [ ] UI Components base (Shadcn)
-- [ ] Navegação principal
+- [x] CRUD Wallets
+- [x] CRUD Categories  
+- [x] UI Components base (Shadcn)
+- [x] Navegação principal
 
 ### Fase 4: Transactions CRUD (Sprint 7-8)
-- [ ] Formulário de transações
-- [ ] Lista de transações
-- [ ] Filtros básicos
-- [ ] Validações
+- [x] Formulário de transações
+- [x] Lista de transações
+- [x] Filtros básicos
+- [x] Validações
 
 ### Fase 5: Advanced Features (Sprint 9-10)
 - [ ] Sistema de recorrência
