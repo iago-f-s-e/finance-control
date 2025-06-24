@@ -195,10 +195,10 @@ CREATE TABLE wallet_transfers (
 - [ ] Configuração Biome + Git hooks
 
 ### Fase 2: Core Domain (Sprint 3-4)  
-- [ ] Entities: Transaction, Wallet, Category
-- [ ] Repository pattern com Supabase
-- [ ] Use cases básicos
-- [ ] Zustand stores
+- [x] Entities: Transaction, Wallet, Category
+- [x] Repository pattern com Supabase
+- [x] Use cases básicos
+- [x] Zustand stores
 
 ### Fase 3: Wallet & Categories (Sprint 5-6)
 - [ ] CRUD Wallets

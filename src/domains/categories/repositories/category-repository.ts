@@ -1,5 +1,5 @@
-import { Category, CreateCategoryDTO, UpdateCategoryDTO } from '../entities/category'
-import { TransactionType } from '@/domains/transactions/entities/transaction'
+import type { Category, CreateCategoryDTO, UpdateCategoryDTO } from '../entities/category'
+import type { TransactionType } from '@/domains/transactions/entities/transaction'
 
 export interface CategoryRepository {
   create(data: CreateCategoryDTO): Promise<Category>

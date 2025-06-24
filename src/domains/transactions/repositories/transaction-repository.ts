@@ -1,4 +1,4 @@
-import { Transaction, CreateTransactionDTO, UpdateTransactionDTO } from '../entities/transaction'
+import type { Transaction, CreateTransactionDTO, UpdateTransactionDTO } from '../entities/transaction'
 
 export interface TransactionFilters {
   walletId?: string

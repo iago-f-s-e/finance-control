@@ -34,6 +34,7 @@ export interface CreateTransactionDTO {
   amount: number
   description: string
   dueDate: Date
+  isExecuted?: boolean
   isRecurring?: boolean
   recurrencePattern?: RecurrencePattern
   recurrenceInterval?: number

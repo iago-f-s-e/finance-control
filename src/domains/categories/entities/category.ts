@@ -1,4 +1,4 @@
-import { TransactionType } from '@/domains/transactions/entities/transaction'
+import type { TransactionType } from '@/domains/transactions/entities/transaction'
 
 export interface Category {
   id: string
